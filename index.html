@@ -22,13 +22,24 @@
     </div>
     <div class="main container">
         <div class="products">
-            <button v-on:click="AddToCart">Add to Cart</button>
+            <div v-for="product in products" class="product" v-bind:key="product.id">
+                <div>
+                    <h4 class="product-title">{{ product.title }}</h4>
+                    <button v-on:click="AddToCart(product)" class="add-to-cart btn">Add to Cart</button>
+                </div>
+            </div>
         </div>
         <div class="cart">
             <h2>Shopping Cart</h2>
-            <div>
+            <ul>
+                <li v-for="item in cart" v-bind:key="item.id" class="cart-item">
+                    <div class="item-title">{{ item.title }}</div>
+                </li>
+            </ul>
+            <div v-if="cart.length" class="cart-total">
                 Total: {{ total }}
             </div>
+            <div v-else class="cart-empty">No item in the cart</div>
         </div>
     </div>
 </div>
