@@ -18,13 +18,24 @@
                 <img src="public/logo.png">
                 <h1>Vue.js Poster Shop</h1>
             </div>
+            <form class="search-bar" v-on:submit.prevent="onSubmit">
+                <input type="text" placeholder="Search Posters" required v-model="search">
+                <input type="submit" class="btn" value="Search">
+            </form>
+            <p>Search terms for <em>cat , dog , flower</em></p>
         </div>
     </div>
     <div class="main container">
         <div class="products">
             <div v-for="product in products" class="product" v-bind:key="product.id">
                 <div>
+                    <div class="product-image">
+                        <img v-bind:src="product.thumb">
+                    </div>
+                </div>
+                <div>
                     <h4 class="product-title">{{ product.title }}</h4>
+                    <p class="produc-price"><strong>{{ product.price | currency }}</strong></p>
                     <button v-on:click="AddToCart(product)" class="add-to-cart btn">Add to Cart</button>
                 </div>
             </div>
@@ -34,10 +45,13 @@
             <ul>
                 <li v-for="item in cart" v-bind:key="item.id" class="cart-item">
                     <div class="item-title">{{ item.title }}</div>
+                    <span class="item-qty">{{ item.price|currency }} x {{ item.qty }}</span>
+                    <button class="btn" v-on:click="inc(item)">+</button>
+                    <button class="btn" v-on:click="dec(item)">-</button>
                 </li>
             </ul>
             <div v-if="cart.length" class="cart-total">
-                Total: {{ total }}
+                Total: {{ total|currency }}
             </div>
             <div v-else class="cart-empty">No item in the cart</div>
         </div>
@@ -47,6 +61,7 @@
 <!-- Scripts -->
 <script src="/reload/reload.js"></script>
 <script type="text/javascript" src="node_modules/vue/dist/vue.js"></script>
+<script type="text/javascript" src="node_modules/vue-resource/dist/vue-resource.js"></script>
 <script type="text/javascript" src="public/script.js"></script>
 
 </body>
