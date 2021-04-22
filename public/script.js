@@ -4,7 +4,9 @@ new Vue({
         total: 0,
         products: [],
         cart: [],
-        search: "",
+        search: "cat",
+        lastSearch: "",
+        loading: false,
     },
     methods: {
         AddToCart: function(product) {
@@ -43,10 +45,16 @@ new Vue({
         },
 
         onSubmit: function() {
+            this.products = [];
+            this.loading = true;
             var path = "/search?q=".concat(this.search);
             this.$http.get(path)
                 .then(function(response) {
-                    this.products = response.body;
+                    setTimeout(function() {
+                        this.products = response.body;
+                        this.lastSearch = this.search;
+                        this.loading = false;
+                    }.bind(this), 2000);
                 })
         }
     },
@@ -55,5 +63,9 @@ new Vue({
         currency: function(price) {
             return "$".concat(price.toFixed(2));
         }
-    }
+    },
+
+    created : function() {
+        this.onSubmit();
+    },
 })
